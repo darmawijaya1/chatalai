@@ -155,6 +155,10 @@ def logout():
     logout_user()
     return redirect("/")
 
+@app.route("/chat", methods=["GET"])
+def chat_page():
+    return render_template("chat/chat.html")
+
 @app.route("/chat", methods=["POST"])
 def chat():
     try:

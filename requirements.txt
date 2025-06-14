@@ -2,3 +2,8 @@ Flask
 azure-cognitiveservices-speech
 azure-ai-textanalytics
 requests
+flask_sqlalchemy
+flask_login
+openai
+werkzeug
+pymysql

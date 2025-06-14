@@ -1,5 +1,4 @@
 from flask import Flask, send_from_directory, request, jsonify, session, render_template, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from openai import AzureOpenAI
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -26,9 +25,6 @@ client = AzureOpenAI(
 # === Flask App Setup ===
 app = Flask(__name__, static_folder='assets')
 app.secret_key = SECRET_KEY
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"

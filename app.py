@@ -44,8 +44,9 @@ def check_risk_keywords(text):
     ]
     return any(keyword in text.lower() for keyword in risk_keywords)
 
-# === Logging ===
 def log_chat(user_message, mood, reply):
+    if os.getenv("VERCEL") == "1":
+        return  # skip writing log on vercel
     log_data = {
         "timestamp": datetime.now().isoformat(),
         "message": user_message,
@@ -57,6 +58,7 @@ def log_chat(user_message, mood, reply):
         if f.tell() == 0:
             writer.writeheader()
         writer.writerow(log_data)
+
 
 # === Routes ===
 @app.route("/")

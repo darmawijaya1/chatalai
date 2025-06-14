@@ -26,7 +26,6 @@ client = AzureOpenAI(
 # === Flask App Setup ===
 app = Flask(__name__, static_folder='assets')
 app.secret_key = SECRET_KEY
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/mydatabase'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

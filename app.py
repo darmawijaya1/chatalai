@@ -1,15 +1,12 @@
-from flask import Flask, send_from_directory, request, jsonify, session, render_template, redirect, url_for
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask import Flask, send_from_directory, request, jsonify, render_template
 from openai import AzureOpenAI
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 import re
 import csv
 
-# === Config Variables (TANPA .env) ===
+# === Config ===
 SECRET_KEY = "supersecretkey"
-DATABASE_URI = "mysql+pymysql://root:rootpassword@localhost/mydatabase"
 
 AZURE_API_KEY = "EDCcDvLQI5S4vhQbNHPiqc2bd3BHP3WRRHaIbiWHZEXWVtDYIkyWJQQJ99BFACfhMk5XJ3w3AAAAACOG62XY"
 AZURE_ENDPOINT = "https://adarm-mbp20fil-swedencentral.services.ai.azure.com/"
@@ -22,19 +19,9 @@ client = AzureOpenAI(
     azure_endpoint=AZURE_ENDPOINT
 )
 
-# === Flask App Setup ===
+# === Flask Setup ===
 app = Flask(__name__, static_folder='assets')
 app.secret_key = SECRET_KEY
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "login"
-
-
-
-# === User Loader ===
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
 # === Mood Detection ===
 def detect_mood(text):
@@ -50,14 +37,14 @@ def detect_mood(text):
     else:
         return "Neutral"
 
-# === Risk Keyword Detection ===
+# === Risiko ===
 def check_risk_keywords(text):
     risk_keywords = [
         "suicide", "self-harm", "want to disappear", "end it all", "too tired", "end my life"
     ]
     return any(keyword in text.lower() for keyword in risk_keywords)
 
-# === Logging Function ===
+# === Logging ===
 def log_chat(user_message, mood, reply):
     log_data = {
         "timestamp": datetime.now().isoformat(),
@@ -72,21 +59,9 @@ def log_chat(user_message, mood, reply):
         writer.writerow(log_data)
 
 # === Routes ===
-
 @app.route("/")
 def index():
     return send_from_directory(os.getcwd(), "index.html")
-
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', username=current_user.username)
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
 
 @app.route("/chat", methods=["GET"])
 def chat_page():
@@ -96,7 +71,6 @@ def chat_page():
 def chat():
     try:
         user_message = request.form.get("message", "")
-
         if check_risk_keywords(user_message):
             emergency_reply = (
                 "💡 I hear you, and I care deeply. "
@@ -122,6 +96,6 @@ def chat():
     except Exception as e:
         return jsonify({"reply": f"❌ Error: {str(e)}"}), 500
 
-
-
-app = Flask(__name__)
+# === Run Flask App ===
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001)

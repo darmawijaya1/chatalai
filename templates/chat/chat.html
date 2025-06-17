@@ -139,6 +139,21 @@
         margin-top: 3rem;
         text-align: center;
       }
+
+      .clear-chat-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        background: transparent;
+        border: none;
+        color: #999;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      .clear-chat-btn:hover {
+        color: #dc3545;
+      }
     </style>
   </head>
   <body class="container py-5">
@@ -153,6 +168,7 @@
     <!-- Chat Section -->
     <section id="chat-section" class="mb-5">
       <h2 class="mb-3">Curhat Sekarang 💬</h2>
+      <button class="clear-chat-btn" onclick="clearChat()">Hapus Riwayat Chat 🗑️</button>
       <div id="chat-box" class="mb-3"></div>
 
       <div class="input-group mb-4">
@@ -171,6 +187,19 @@
     </footer>
 
     <script>
+      const chatBox = document.getElementById("chat-box");
+      const userInput = document.getElementById("user-input");
+
+      // Load chat history from localStorage
+      window.onload = () => {
+        const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
+        history.forEach((msg) => appendMessage(msg.sender, msg.message));
+
+        if (history.length === 0) {
+          appendMessage("bot", "Hai Chatalers! 😊 Chatal di sini buat dengerin kamu. Cerita apa aja, ya?");
+        }
+      };
+
       function appendMessage(sender, message) {
         const div = document.createElement("div");
         div.className = sender;
@@ -186,18 +215,30 @@
         div.appendChild(avatar);
         div.appendChild(messageContent);
 
-        document.getElementById("chat-box").appendChild(div);
-        document.getElementById("chat-box").scrollTop =
-          document.getElementById("chat-box").scrollHeight;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        saveToHistory(sender, message);
+      }
+
+      function saveToHistory(sender, message) {
+        const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
+        history.push({ sender, message });
+        localStorage.setItem("chatHistory", JSON.stringify(history));
+      }
+
+      function clearChat() {
+        localStorage.removeItem("chatHistory");
+        chatBox.innerHTML = "";
+        appendMessage("bot", "Riwayat chat sudah dihapus. Silakan mulai cerita lagi ya 😊");
       }
 
       async function sendMessage() {
-        const input = document.getElementById("user-input");
-        const text = input.value.trim();
+        const text = userInput.value.trim();
         if (!text) return;
 
         appendMessage("user", text);
-        input.value = "";
+        userInput.value = "";
 
         const formData = new FormData();
         formData.append("message", text);
@@ -215,16 +256,8 @@
         }
       }
 
-      // Auto greet saat halaman dimuat
-      window.onload = () => {
-        appendMessage(
-          "bot",
-          "Hai Chatalers! 😊 Chatal di sini buat dengerin kamu. Cerita apa aja, ya?"
-        );
-      };
-
-      // Dukungan Enter & Shift+Enter
-      document.getElementById("user-input").addEventListener("keydown", function (e) {
+      // Support Enter to send, Shift+Enter for newline
+      userInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
           sendMessage();

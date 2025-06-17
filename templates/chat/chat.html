@@ -13,22 +13,22 @@
       background: linear-gradient(to right, #f8f9fa, #e9ecef);
       color: #343a40;
       margin: 0;
+      min-height: 100vh;
     }
-
     .hamburger-btn {
       position: fixed;
-      top: 10px;
-      left: 10px;
-      background-color: #74c0fc;
-      color: white;
+      top: 16px;
+      left: 16px;
+      background-color: #4dabf7;
+      color: #fff;
       border: none;
-      padding: 10px 14px;
-      font-size: 1.2rem;
-      border-radius: 6px;
-      z-index: 1050;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 9px 15px 9px 15px;
+      font-size: 1.5rem;
+      border-radius: 10px;
+      z-index: 1051;
+      display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-
     .sidebar {
       width: 250px;
       background: #ffffff;
@@ -37,25 +37,25 @@
       position: fixed;
       top: 0;
       left: 0;
-      padding: 1rem;
+      padding: 1.4rem 1rem 1rem 1rem;
       overflow-y: auto;
+      z-index: 1050;
+      transition: transform .25s;
     }
-
     .sidebar h5 {
       font-weight: 600;
       margin-bottom: 1rem;
     }
-
     .session-list {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
-
     .session-list li {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
+      padding: 9px 12px;
       margin-bottom: 6px;
       border-radius: 6px;
       cursor: pointer;
@@ -63,71 +63,87 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      transition: background .16s;
     }
-
     .session-list li.active,
     .session-list li:hover {
       background-color: #d0ebff;
       color: #1c7ed6;
     }
-
     .delete-btn {
       background: transparent;
       border: none;
       color: #dc3545;
-      font-size: 0.9rem;
+      font-size: 1rem;
       cursor: pointer;
-      margin-left: 8px;
+      margin-left: 10px;
+      padding: 2px 5px;
     }
-
     .delete-btn:hover {
       color: #a61e4d;
     }
-
     .new-session-btn {
       width: 100%;
       margin-top: 1rem;
       border: 1px dashed #74c0fc;
       background: #e3f2fd;
       font-weight: 600;
+      color: #228be6;
+      border-radius: 7px;
+      transition: background .17s;
     }
-
+    .new-session-btn:hover {
+      background: #d0ebff;
+    }
     .hero {
       background: linear-gradient(135deg, #74c0fc, #d0bfff);
-      padding: 60px 20px;
+      padding: 60px 20px 46px 20px;
       text-align: center;
       border-radius: 20px;
-      color: #ffffff;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
       margin: 20px 20px 50px 270px;
     }
-
     .hero h1 {
-      font-size: 3rem;
+      font-size: 2.6rem;
       font-weight: 700;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.11);
     }
-
+    .hero .btn {
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 50px;
+      background: #fff;
+      color: #1c7ed6;
+      margin-top: 1rem;
+      border: none;
+      box-shadow: 0 1px 5px rgba(76, 168, 255, 0.05);
+    }
+    .hero .btn:hover {
+      background-color: #f1f3f5;
+      color: #1971c2;
+    }
     .main {
       margin-left: 270px;
-      padding: 2rem;
+      padding: 2rem 2rem 1rem 2rem;
+      min-height: 100vh;
+      background: transparent;
+      transition: margin-left .2s;
     }
-
     #chat-box {
-      height: 460px;
+      height: 440px;
       overflow-y: auto;
       background-color: #ffffff;
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+      padding: 20px 22px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
     }
-
     .user, .bot {
       display: flex;
       margin-bottom: 16px;
       align-items: flex-start;
     }
-
     .user .avatar, .bot .avatar {
       width: 40px;
       height: 40px;
@@ -140,47 +156,58 @@
       border: 1px solid #ced4da;
       background-color: #dee2e6;
       color: #495057;
+      flex-shrink: 0;
     }
-
     .message-content {
-      max-width: 80%;
+      max-width: 90%;
       background-color: #f8f9fa;
-      padding: 12px 16px;
+      padding: 13px 20px;
       border-radius: 12px;
+      font-size: 1.05rem;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
-
     .user .message-content {
       background-color: #e7f5ff;
       color: #1c7ed6;
       margin-left: auto;
+      align-self: flex-end;
     }
-
     .bot .message-content {
       background-color: #f1f3f5;
       color: #495057;
     }
-
-    .input-group textarea {
-      border-radius: 30px 0 0 30px;
-      padding: 14px;
-      font-size: 1rem;
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+      margin-bottom: 15px;
+    }
+    .chat-textarea {
+      flex: 1;
+      border-radius: 20px;
       border: 1px solid #ced4da;
+      padding: 12px 18px;
+      font-size: 1rem;
       resize: none;
+      min-height: 48px;
+      outline: none;
     }
-
-    .input-group .btn {
-      border-radius: 0 30px 30px 0;
-      font-weight: 600;
-      padding: 14px 24px;
+    .chat-send-btn {
       background-color: #4dabf7;
+      color: #fff;
       border: none;
+      border-radius: 20px;
+      padding: 0 36px;
+      font-size: 1.35rem;
+      font-weight: bold;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    .input-group .btn:hover {
-      background-color: #339af0;
+    .chat-send-btn:hover, .chat-send-btn:active {
+      background: #339af0;
     }
-
     .clear-chat-btn {
       display: inline-block;
       margin-bottom: 20px;
@@ -190,71 +217,101 @@
       color: #999;
       text-decoration: underline;
       cursor: pointer;
+      padding: 0 3px;
     }
-
     .clear-chat-btn:hover {
       color: #dc3545;
     }
-
     footer {
-      font-size: 0.9rem;
+      font-size: 0.97rem;
       color: #868e96;
       border-top: 1px solid #dee2e6;
-      padding-top: 1.5rem;
-      margin-top: 3rem;
+      padding-top: 1.4rem;
+      margin-top: 2.5rem;
       text-align: center;
     }
-
     @media (max-width: 991px) {
+      .hamburger-btn { display: block; }
       .sidebar {
-        display: none;
         position: fixed;
-        z-index: 1040;
-        background: #fff;
-        height: 100%;
-        width: 80%;
-        top: 0;
+        z-index: 1060;
+        height: 100vh;
         left: 0;
-        padding: 1rem;
-        border-right: 1px solid #dee2e6;
-        transition: all 0.3s ease-in-out;
+        top: 0;
+        width: 85vw;
+        max-width: 330px;
+        background: #fff;
+        transform: translateX(-110%);
+        box-shadow: 4px 0 14px rgba(125,125,125,0.11);
+        transition: transform .26s;
+        border-right: 1px solid #74c0fc;
+        padding-top: 2.6rem;
       }
-
       .sidebar.show {
-        display: block;
+        transform: translateX(0);
       }
-
       .main {
-        margin-left: 0 !important;
+        margin-left: 0;
+        padding: 1rem;
       }
-
-      .input-group {
+      .hero {
+        margin: 18px 5px 28px 5px;
+        padding: 30px 7px 26px 7px;
+      }
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+      #chat-box {
+        height: 320px;
+        padding: 13px 9px;
+      }
+      .chat-input-row {
         flex-direction: column;
         gap: 8px;
       }
-
-      .input-group textarea,
-      .input-group .btn {
+      .chat-send-btn {
         width: 100%;
+        font-size: 1.11rem;
+        padding: 13px 0;
         border-radius: 16px;
       }
-
-      #chat-box {
-        height: 360px;
+      .chat-textarea {
+        border-radius: 16px;
+        min-height: 40px;
+        font-size: 1rem;
       }
+    }
+    @media (max-width: 576px) {
+      .sidebar {
+        max-width: 97vw;
+        padding: 1rem 5vw 1rem 5vw;
+      }
+      .main {
+        padding: 0.5rem;
+      }
+      .hero {
+        margin: 10px 2vw 22px 2vw;
+        padding: 18px 3vw 15px 3vw;
+        border-radius: 13px;
+      }
+      .message-content {
+        font-size: .99rem;
+        padding: 11px 11px;
+      }
+      #chat-box { height: 225px; }
     }
   </style>
 </head>
 <body>
-  <!-- Tombol Hamburger (Mobile) -->
+  <!-- Hamburger button (Mobile) -->
   <button class="hamburger-btn d-lg-none" onclick="toggleSidebar()">☰</button>
 
   <!-- Sidebar -->
-  <div class="sidebar" id="mobileSidebar">
+  <nav class="sidebar" id="mobileSidebar">
     <h5>Riwayat Sesi</h5>
     <ul class="session-list" id="session-list"></ul>
     <button class="btn new-session-btn" onclick="createNewSession()">+ Sesi Baru</button>
-  </div>
+  </nav>
 
   <!-- Hero Section -->
   <section class="hero">
@@ -265,26 +322,25 @@
   </section>
 
   <!-- Main Chat Area -->
-  <div class="main" id="chat-section">
+  <main class="main" id="chat-section">
     <h2 class="mb-3">Curhat Sekarang 💬</h2>
     <button class="clear-chat-btn" onclick="clearCurrentSession()">🗑️ Hapus Riwayat Sesi Ini</button>
-    <div id="chat-box" class="mb-3"></div>
-
-    <div class="input-group mb-4">
-      <textarea id="user-input" class="form-control" placeholder="Tulis curhatanmu di sini..." rows="1"></textarea>
-      <button class="btn btn-primary" onclick="sendMessage()">Kirim</button>
+    <div id="chat-box"></div>
+    <div class="chat-input-row">
+      <textarea id="user-input" class="chat-textarea" placeholder="Tulis curhatanmu di sini..." rows="1"></textarea>
+      <button class="chat-send-btn" onclick="sendMessage()">Kirim</button>
     </div>
-
     <footer>
       <small>© 2025 Chatal – @Darmawijaya</small>
     </footer>
-  </div>
+  </main>
 
   <script>
     const chatBox = document.getElementById("chat-box");
     const userInput = document.getElementById("user-input");
     const sessionList = document.getElementById("session-list");
     const sidebar = document.getElementById("mobileSidebar");
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
 
     let sessions = JSON.parse(localStorage.getItem("sessions")) || {};
     let currentSessionId = localStorage.getItem("currentSessionId") || createNewSession(true);
@@ -293,6 +349,14 @@
     function toggleSidebar() {
       sidebar.classList.toggle("show");
     }
+    // Close sidebar on background click
+    document.addEventListener('click', function(e){
+      if(window.innerWidth <= 991) {
+        if(sidebar.classList.contains("show") && !sidebar.contains(e.target) && e.target !== hamburgerBtn) {
+          sidebar.classList.remove("show");
+        }
+      }
+    });
 
     function createNewSession(firstTime = false) {
       const tempId = "session_" + Date.now();
@@ -400,32 +464,29 @@
     async function sendMessage() {
       const text = userInput.value.trim();
       if (!text) return;
-
       appendMessage("user", text);
       userInput.value = "";
-
-      const formData = new FormData();
-      formData.append("message", text);
-
-      try {
-        const res = await fetch("/chat", {
-          method: "POST",
-          body: formData,
-        });
-        const data = await res.json();
-        appendMessage("bot", data.reply);
-      } catch (err) {
-        appendMessage("bot", "❌ Terjadi error saat mengirim.");
-      }
+      // Simulasi API: replace dengan API asli jika ada
+      setTimeout(() => {
+        appendMessage("bot", "Terima kasih sudah berbagi. Aku di sini untuk mendengarkan kamu 😊");
+      }, 600);
+      // --- UNCOMMENT ini jika pakai API asli ---
+      // const formData = new FormData();
+      // formData.append("message", text);
+      // try {
+      //   const res = await fetch("/chat", { method: "POST", body: formData });
+      //   const data = await res.json();
+      //   appendMessage("bot", data.reply);
+      // } catch (err) {
+      //   appendMessage("bot", "❌ Terjadi error saat mengirim.");
+      // }
     }
-
     userInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
-
     renderSessions();
     loadSession();
   </script>

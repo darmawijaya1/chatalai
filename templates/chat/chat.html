@@ -2,9 +2,6 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="dicoding:email" content="adarmawijaya7@gmail.com">
-  <meta name="dicoding:email" content="khaerullatif21@gmail.com">
-  <meta name="dicoding:email" content="prdnmhmdh@gmail.com">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>Chatal – Chat Kesehatan Mental</title>
   <link rel="icon" type="image/png" href="./assets/img/logos/Chatal-primary.png" />
@@ -249,9 +246,11 @@
   </style>
 </head>
 <body>
+  <!-- Tombol Hamburger (Mobile) -->
+  <button class="hamburger-btn d-lg-none" onclick="toggleSidebar()">☰</button>
 
   <!-- Sidebar -->
-  <div class="sidebar">
+  <div class="sidebar" id="mobileSidebar">
     <h5>Riwayat Sesi</h5>
     <ul class="session-list" id="session-list"></ul>
     <button class="btn new-session-btn" onclick="createNewSession()">+ Sesi Baru</button>
@@ -285,10 +284,15 @@
     const chatBox = document.getElementById("chat-box");
     const userInput = document.getElementById("user-input");
     const sessionList = document.getElementById("session-list");
+    const sidebar = document.getElementById("mobileSidebar");
 
     let sessions = JSON.parse(localStorage.getItem("sessions")) || {};
     let currentSessionId = localStorage.getItem("currentSessionId") || createNewSession(true);
     let pendingRename = false;
+
+    function toggleSidebar() {
+      sidebar.classList.toggle("show");
+    }
 
     function createNewSession(firstTime = false) {
       const tempId = "session_" + Date.now();
@@ -316,6 +320,7 @@
           localStorage.setItem("currentSessionId", id);
           renderSessions();
           loadSession();
+          sidebar.classList.remove("show");
         };
 
         const delBtn = document.createElement("button");
@@ -346,11 +351,10 @@
       chatBox.innerHTML = "";
       const history = sessions[currentSessionId] || [];
       if (history.length === 0) {
-        appendMessage("bot", "Hai Chatalers! 😊 Chatal di sini buat dengerin kamu. Cerita apa aja, ya?");
+        appendMessage("bot", "Hai Chatalers! 😊 Chatal di sini buat dengerin kamu. Cerita apa aja, ya?", false);
         return;
       }
       history.forEach(msg => appendMessage(msg.sender, msg.message, false));
-
     }
 
     function appendMessage(sender, message, save = true) {
@@ -380,7 +384,6 @@
           pendingRename = false;
           renderSessions();
         }
-
         sessions[currentSessionId].push({ sender, message });
         localStorage.setItem("sessions", JSON.stringify(sessions));
       }

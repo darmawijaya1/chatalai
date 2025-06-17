@@ -2,9 +2,6 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="dicoding:email" content="adarmawijaya7@gmail.com" />
-    <meta name="dicoding:email" content="khaerullatif21@gmail.com" />
-    <meta name="dicoding:email" content="prdnmhmdh@gmail.com" />
     <title>Chatal – Chat Kesehatan Mental</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -26,7 +23,7 @@
         padding: 60px 20px;
         text-align: center;
         border-radius: 20px;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
         color: #ffffff;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       }
@@ -50,7 +47,7 @@
       }
 
       #chat-box {
-        height: 460px;
+        height: 420px;
         overflow-y: auto;
         background-color: #ffffff;
         border-radius: 16px;
@@ -68,8 +65,8 @@
 
       .user .avatar,
       .bot .avatar {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         margin-right: 12px;
         font-size: 20px;
         display: flex;
@@ -85,30 +82,20 @@
       .message-content {
         max-width: 80%;
         background-color: #f8f9fa;
-        padding: 12px 16px;
-        border-radius: 12px;
+        padding: 10px 14px;
+        border-radius: 10px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
       }
 
       .user .message-content {
         background-color: #e7f5ff;
         color: #1c7ed6;
-        align-self: flex-end;
         margin-left: auto;
       }
 
       .bot .message-content {
         background-color: #f1f3f5;
         color: #495057;
-      }
-
-      #chat-box::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      #chat-box::-webkit-scrollbar-thumb {
-        background: #ced4da;
-        border-radius: 4px;
       }
 
       .input-group textarea {
@@ -131,54 +118,73 @@
         background-color: #339af0;
       }
 
-      footer {
-        font-size: 0.9rem;
-        color: #868e96;
-        border-top: 1px solid #dee2e6;
-        padding-top: 1.5rem;
-        margin-top: 3rem;
-        text-align: center;
-      }
-
       .clear-chat-btn {
-        display: inline-block;
-        margin-bottom: 20px;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
         background: transparent;
         border: none;
         color: #999;
         text-decoration: underline;
         cursor: pointer;
+        padding: 0;
+        margin-bottom: 10px;
       }
 
       .clear-chat-btn:hover {
         color: #dc3545;
       }
+
+      .session-list button {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        text-align: left;
+      }
+
+      footer {
+        font-size: 0.9rem;
+        color: #868e96;
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem;
+        margin-top: 2rem;
+        text-align: center;
+      }
     </style>
   </head>
-  <body class="container py-5">
+
+  <body class="container py-4">
     <!-- Hero Section -->
     <section class="hero">
       <h1 class="display-5 fw-bold">Chatal</h1>
       <p class="lead">Teman ngobrol virtual yang siap dengerin kamu, kapan pun kamu butuh.</p>
-      <p class="mb-4">Kamu bisa cerita bebas di sini, tanpa takut dihakimi. Yuk mulai ngobrol bareng Chatal!</p>
+      <p>Kamu bisa cerita bebas di sini, tanpa takut dihakimi. Yuk mulai ngobrol bareng Chatal!</p>
       <a href="#chat-section" class="btn btn-light btn-lg">Mulai Curhat</a>
     </section>
 
     <!-- Chat Section -->
-    <section id="chat-section" class="mb-5">
-      <h2 class="mb-3">Curhat Sekarang 💬</h2>
-      <button class="clear-chat-btn" onclick="clearChat()">Hapus Riwayat Chat 🗑️</button>
-      <div id="chat-box" class="mb-3"></div>
+    <section id="chat-section">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <h6>Daftar Sesi 🗂️</h6>
+          <div id="session-list"></div>
+          <button class="btn btn-primary btn-sm mt-3 w-100" onclick="createNewSession()">+ Sesi Baru</button>
+          <button class="clear-chat-btn mt-2" onclick="clearCurrentSession()">🗑️ Hapus Sesi Aktif</button>
+        </div>
 
-      <div class="input-group mb-4">
-        <textarea
-          id="user-input"
-          class="form-control"
-          placeholder="Tulis curhatanmu di sini..."
-          rows="1"
-        ></textarea>
-        <button class="btn btn-primary" onclick="sendMessage()">Kirim</button>
+        <div class="col-md-9">
+          <h4 class="mb-3">Curhat Sekarang 💬</h4>
+          <div id="chat-box" class="mb-3"></div>
+
+          <div class="input-group mb-4">
+            <textarea
+              id="user-input"
+              class="form-control"
+              placeholder="Tulis curhatanmu di sini..."
+              rows="1"
+            ></textarea>
+            <button class="btn btn-primary" onclick="sendMessage()">Kirim</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -188,67 +194,100 @@
 
     <script>
       const chatBox = document.getElementById("chat-box");
+      const sessionListDiv = document.getElementById("session-list");
       const userInput = document.getElementById("user-input");
 
-      // Load chat history from localStorage
-      window.onload = () => {
-        const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
-        history.forEach((msg) => appendMessage(msg.sender, msg.message));
+      let chatSessions = JSON.parse(localStorage.getItem("chatSessions")) || {};
+      let activeSessionId = localStorage.getItem("activeSessionId");
 
-        if (history.length === 0) {
-          appendMessage("bot", "Hai Chatalers! 😊 Chatal di sini buat dengerin kamu. Cerita apa aja, ya?");
-        }
-      };
+      function createNewSession() {
+        const id = "sesi-" + new Date().toISOString();
+        chatSessions[id] = [];
+        activeSessionId = id;
+        localStorage.setItem("activeSessionId", id);
+        saveSessions();
+        renderSessionList();
+        renderChat();
+      }
+
+      function saveSessions() {
+        localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
+      }
+
+      function renderSessionList() {
+        sessionListDiv.innerHTML = "";
+        Object.keys(chatSessions)
+          .sort((a, b) => b.localeCompare(a))
+          .forEach((id) => {
+            const btn = document.createElement("button");
+            btn.className = "btn btn-outline-secondary btn-sm";
+            btn.textContent = id === activeSessionId ? `${id} (aktif)` : id;
+            btn.onclick = () => {
+              activeSessionId = id;
+              localStorage.setItem("activeSessionId", id);
+              renderSessionList();
+              renderChat();
+            };
+            sessionListDiv.appendChild(btn);
+          });
+      }
+
+      function renderChat() {
+        chatBox.innerHTML = "";
+        const session = chatSessions[activeSessionId] || [];
+        session.forEach(({ sender, message }) => {
+          const div = document.createElement("div");
+          div.className = sender;
+
+          const avatar = document.createElement("div");
+          avatar.className = "avatar";
+          avatar.innerText = sender === "user" ? "🧑" : "🤖";
+
+          const messageContent = document.createElement("div");
+          messageContent.className = "message-content";
+          messageContent.textContent = message;
+
+          div.appendChild(avatar);
+          div.appendChild(messageContent);
+
+          chatBox.appendChild(div);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
 
       function appendMessage(sender, message) {
-        const div = document.createElement("div");
-        div.className = sender;
-
-        const avatar = document.createElement("div");
-        avatar.className = "avatar";
-        avatar.innerText = sender === "user" ? "🧑" : "🤖";
-
-        const messageContent = document.createElement("div");
-        messageContent.className = "message-content";
-        messageContent.textContent = message;
-
-        div.appendChild(avatar);
-        div.appendChild(messageContent);
-
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        saveToHistory(sender, message);
+        if (!chatSessions[activeSessionId]) return;
+        chatSessions[activeSessionId].push({ sender, message });
+        saveSessions();
+        renderChat();
       }
 
-      function saveToHistory(sender, message) {
-        const history = JSON.parse(localStorage.getItem("chatHistory")) || [];
-        history.push({ sender, message });
-        localStorage.setItem("chatHistory", JSON.stringify(history));
-      }
-
-      function clearChat() {
-        localStorage.removeItem("chatHistory");
-        chatBox.innerHTML = "";
-        appendMessage("bot", "Riwayat chat sudah dihapus. Silakan mulai cerita lagi ya 😊");
+      function clearCurrentSession() {
+        if (confirm("Yakin ingin menghapus sesi ini?")) {
+          delete chatSessions[activeSessionId];
+          const remaining = Object.keys(chatSessions);
+          activeSessionId = remaining[0] || null;
+          localStorage.setItem("activeSessionId", activeSessionId);
+          saveSessions();
+          renderSessionList();
+          renderChat();
+        }
       }
 
       async function sendMessage() {
         const text = userInput.value.trim();
-        if (!text) return;
-
+        if (!text || !activeSessionId) return;
         appendMessage("user", text);
         userInput.value = "";
 
-        const formData = new FormData();
-        formData.append("message", text);
-
         try {
+          const formData = new FormData();
+          formData.append("message", text);
+
           const res = await fetch("/chat", {
             method: "POST",
             body: formData,
           });
-
           const data = await res.json();
           appendMessage("bot", data.reply);
         } catch (err) {
@@ -256,13 +295,20 @@
         }
       }
 
-      // Support Enter to send, Shift+Enter for newline
       userInput.addEventListener("keydown", function (e) {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
           sendMessage();
         }
       });
+
+      // Init
+      if (!activeSessionId || !chatSessions[activeSessionId]) {
+        createNewSession();
+      } else {
+        renderSessionList();
+        renderChat();
+      }
     </script>
   </body>
 </html>

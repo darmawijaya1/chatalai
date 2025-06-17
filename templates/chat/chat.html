@@ -314,10 +314,11 @@
         appendMessage("bot", "Hai Chatalers! 😊 Chatal di sini buat dengerin kamu. Cerita apa aja, ya?");
         return;
       }
-      history.forEach(msg => appendMessage(msg.sender, msg.message));
+      history.forEach(msg => appendMessage(msg.sender, msg.message, false));
+
     }
 
-    function appendMessage(sender, message) {
+    function appendMessage(sender, message, save = true) {
       const div = document.createElement("div");
       div.className = sender;
 
@@ -334,18 +335,20 @@
       chatBox.appendChild(div);
       chatBox.scrollTop = chatBox.scrollHeight;
 
-      if (sender === "user" && pendingRename) {
-        const newId = "Sesi: " + message.slice(0, 30).replace(/\s+/g, " ").trim();
-        sessions[newId] = sessions[currentSessionId];
-        delete sessions[currentSessionId];
-        currentSessionId = newId;
-        localStorage.setItem("currentSessionId", newId);
-        pendingRename = false;
-        renderSessions();
-      }
+      if (save) {
+        if (sender === "user" && pendingRename) {
+          const newId = "Sesi: " + message.slice(0, 30).replace(/\s+/g, " ").trim();
+          sessions[newId] = sessions[currentSessionId];
+          delete sessions[currentSessionId];
+          currentSessionId = newId;
+          localStorage.setItem("currentSessionId", newId);
+          pendingRename = false;
+          renderSessions();
+        }
 
-      sessions[currentSessionId].push({ sender, message });
-      localStorage.setItem("sessions", JSON.stringify(sessions));
+        sessions[currentSessionId].push({ sender, message });
+        localStorage.setItem("sessions", JSON.stringify(sessions));
+      }
     }
 
     function clearCurrentSession() {

@@ -453,9 +453,17 @@
       if (!text) return;
       appendMessage("user", text);
       userInput.value = "";
-      // === PENTING: Kirim ke API asli ===
+
+      // Kirim seluruh riwayat chat untuk sesi ini
+      const history = sessions[currentSessionId] || [];
+      const historyString = history
+        .map(msg => (msg.sender === 'user' ? 'User: ' : 'Bot: ') + msg.message)
+        .join('\n');
+
       const formData = new FormData();
       formData.append("message", text);
+      formData.append("history", historyString);
+
       try {
         const res = await fetch("/chat", {
           method: "POST",
@@ -467,6 +475,7 @@
         appendMessage("bot", "❌ Terjadi error saat mengirim.");
       }
     }
+
     userInput.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();

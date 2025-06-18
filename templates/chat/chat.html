@@ -22,15 +22,12 @@
       background-color: #4dabf7;
       color: #fff;
       border: none;
-      padding: 11px 15px 11px 15px;
+      padding: 11px 15px;
       font-size: 2rem;
       border-radius: 12px;
       z-index: 1102;
       display: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: background .2s;
     }
-    .hamburger-btn:active, .hamburger-btn:focus { background: #228be6; }
     .sidebar {
       width: 250px;
       background: #ffffff;
@@ -42,7 +39,7 @@
       padding: 1.4rem 1rem 1rem 1rem;
       overflow-y: auto;
       z-index: 1101;
-      transition: transform .25s cubic-bezier(.6,.3,.3,1.2);
+      transition: transform .25s;
     }
     .sidebar.hide {
       transform: translateX(-100%);
@@ -250,7 +247,6 @@
       transition: opacity 0.3s;
     }
     .sidebar-overlay.show { display: block; }
-
     @media (max-width: 991px) {
       .hamburger-btn { display: block; }
       .sidebar {
@@ -268,60 +264,21 @@
         padding-top: 2.6rem;
         margin: 0;
       }
-      .sidebar.show {
-        transform: translateX(0);
-      }
-      .sidebar.hide {
-        transform: translateX(-100%);
-      }
-      .main {
-        margin-left: 0;
-        padding: 1rem;
-      }
-      .hero {
-        margin: 18px 5px 28px 5px;
-        padding: 30px 7px 26px 7px;
-      }
-      .hero h1 {
-        font-size: 1.7rem;
-      }
-      #chat-box {
-        height: 320px;
-        padding: 13px 9px;
-      }
-      .chat-input-row {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .chat-send-btn {
-        width: 100%;
-        font-size: 1.11rem;
-        padding: 13px 0;
-        border-radius: 16px;
-      }
-      .chat-textarea {
-        border-radius: 16px;
-        min-height: 40px;
-        font-size: 1rem;
-      }
+      .sidebar.show { transform: translateX(0); }
+      .sidebar.hide { transform: translateX(-100%); }
+      .main { margin-left: 0; padding: 1rem; }
+      .hero { margin: 18px 5px 28px 5px; padding: 30px 7px 26px 7px; }
+      .hero h1 { font-size: 1.7rem; }
+      #chat-box { height: 320px; padding: 13px 9px; }
+      .chat-input-row { flex-direction: column; gap: 8px; }
+      .chat-send-btn { width: 100%; font-size: 1.11rem; padding: 13px 0; border-radius: 16px; }
+      .chat-textarea { border-radius: 16px; min-height: 40px; font-size: 1rem; }
     }
     @media (max-width: 576px) {
-      .sidebar {
-        max-width: 97vw;
-        padding: 1rem 5vw 1rem 5vw;
-      }
-      .main {
-        padding: 0.5rem;
-      }
-      .hero {
-        margin: 10px 2vw 22px 2vw;
-        padding: 18px 3vw 15px 3vw;
-        border-radius: 13px;
-      }
-      .message-content {
-        font-size: .99rem;
-        padding: 11px 11px;
-      }
+      .sidebar { max-width: 97vw; padding: 1rem 5vw 1rem 5vw; }
+      .main { padding: 0.5rem; }
+      .hero { margin: 10px 2vw 22px 2vw; padding: 18px 3vw 15px 3vw; border-radius: 13px; }
+      .message-content { font-size: .99rem; padding: 11px 11px; }
       #chat-box { height: 225px; }
     }
   </style>
@@ -329,10 +286,8 @@
 <body>
   <!-- Hamburger button (Mobile) -->
   <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()">☰</button>
-
   <!-- Overlay for sidebar -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="hideSidebar()"></div>
-
   <!-- Sidebar -->
   <nav class="sidebar hide" id="mobileSidebar">
     <h5>Riwayat Sesi</h5>
@@ -354,7 +309,7 @@
     <button class="clear-chat-btn" onclick="clearCurrentSession()">🗑️ Hapus Riwayat Sesi Ini</button>
     <div id="chat-box"></div>
     <div class="chat-input-row">
-      <textarea id="user-input" class="chat-textarea" placeholder="Tulis curhatanmu di sini..." rows="1"></textarea>
+      <input id="user-input" class="chat-textarea" placeholder="Tulis curhatanmu di sini..." />
       <button class="chat-send-btn" onclick="sendMessage()">Kirim</button>
     </div>
     <footer>
@@ -363,11 +318,10 @@
   </main>
 
   <script>
-    // Responsive Hamburger/Sidebar logic
+    // Responsive Sidebar logic
     const hamburgerBtn = document.getElementById("hamburgerBtn");
     const sidebar = document.getElementById("mobileSidebar");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
-
     function toggleSidebar() {
       sidebar.classList.toggle("show");
       sidebar.classList.toggle("hide");
@@ -378,7 +332,6 @@
       sidebar.classList.add("hide");
       sidebarOverlay.classList.remove("show");
     }
-    // Sembunyikan sidebar jika resize ke desktop
     window.addEventListener('resize', () => {
       if (window.innerWidth > 991) {
         sidebar.classList.remove('show');
@@ -389,7 +342,7 @@
       }
     });
 
-    // Chat/session logic
+    // Session + Chat logic
     const chatBox = document.getElementById("chat-box");
     const userInput = document.getElementById("user-input");
     const sessionList = document.getElementById("session-list");
@@ -426,7 +379,6 @@
           loadSession();
           hideSidebar();
         };
-
         const delBtn = document.createElement("button");
         delBtn.className = "delete-btn";
         delBtn.innerHTML = "🗑️";
@@ -443,7 +395,6 @@
             loadSession();
           }
         };
-
         if (id === currentSessionId) li.classList.add("active");
         li.appendChild(sessionName);
         li.appendChild(delBtn);
@@ -464,20 +415,16 @@
     function appendMessage(sender, message, save = true) {
       const div = document.createElement("div");
       div.className = sender;
-
       const avatar = document.createElement("div");
       avatar.className = "avatar";
       avatar.innerText = sender === "user" ? "🧑" : "🤖";
-
       const messageContent = document.createElement("div");
       messageContent.className = "message-content";
       messageContent.textContent = message;
-
       div.appendChild(avatar);
       div.appendChild(messageContent);
       chatBox.appendChild(div);
       chatBox.scrollTop = chatBox.scrollHeight;
-
       if (save) {
         if (sender === "user" && pendingRename) {
           const newId = "Sesi: " + message.slice(0, 30).replace(/\s+/g, " ").trim();
@@ -506,13 +453,13 @@
       if (!text) return;
       appendMessage("user", text);
       userInput.value = "";
-
-      // Pakai API asli (ganti URL sesuai backend kamu)
+      // === PENTING: Kirim ke API asli ===
+      const formData = new FormData();
+      formData.append("message", text);
       try {
         const res = await fetch("/chat", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
+          body: formData,
         });
         const data = await res.json();
         appendMessage("bot", data.reply || "Maaf, terjadi error dari server.");

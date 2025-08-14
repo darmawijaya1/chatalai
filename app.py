@@ -8,7 +8,7 @@ import csv
 # === Config ===
 SECRET_KEY = "supersecretkey"
 
-AZURE_API_KEY = "1j1Vu4DAb1ArRNEzcr3Y1TvaByU82JZ6M0yLtsOvFamKKxLiIiOaJQQJ99BHACYeBjFXJ3w3AAAAACOGko6r"
+AZURE_API_KEY = "01j1Vu4DAb1ArRNEzcr3Y1TvaByU82JZ6M0yLtsOvFamKKxLiIiOaJQQJ99BHACYeBjFXJ3w3AAAAACOGko6r"
 AZURE_ENDPOINT = "https://eyesxa.services.ai.azure.com/"
 AZURE_DEPLOYMENT = "gpt-4.1curhat"
 

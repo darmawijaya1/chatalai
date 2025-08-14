@@ -8,14 +8,14 @@ import csv
 # === Config ===
 SECRET_KEY = "supersecretkey"
 
-AZURE_API_KEY = "1j1Vu4DAb1ArRNEzcr3Y1TvaByU82JZ6M0yLtsOvFamKKxLiIiOaJQQJ99BHACYeBjFXJ3w3AAAAACOGko6r"
-AZURE_ENDPOINT = "https://eyesxa.services.ai.azure.com/"
-AZURE_DEPLOYMENT = "gpt-4.1curhat"
+AZURE_API_KEY = "3DKhatQCgS73AyVIMVS8da6FSNl8sKt1oW5nyTaikQuvQRgGozgkJQQJ99BHACHYHv6XJ3w3AAAAACOGXGn9"
+AZURE_ENDPOINT = "https://adarm-meau7j6m-eastus2.cognitiveservices.azure.com/"
+AZURE_DEPLOYMENT = "gpt-5-nano"
 
 # === Azure OpenAI Client ===
 client = AzureOpenAI(
     api_key=AZURE_API_KEY,
-    api_version="2023-05-15",
+    api_version="2024-12-01-preview",
     azure_endpoint=AZURE_ENDPOINT
 )
 

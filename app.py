@@ -10,7 +10,7 @@ SECRET_KEY = "supersecretkey"
 
 AZURE_API_KEY = "3DKhatQCgS73AyVIMVS8da6FSNl8sKt1oW5nyTaikQuvQRgGozgkJQQJ99BHACHYHv6XJ3w3AAAAACOGXGn9"
 AZURE_ENDPOINT = "https://adarm-meau7j6m-eastus2.cognitiveservices.azure.com/"
-AZURE_DEPLOYMENT = "gpt-5-nano"
+AZURE_DEPLOYMENT = "gpt-oss-120b"
 
 # === Azure OpenAI Client ===
 client = AzureOpenAI(
